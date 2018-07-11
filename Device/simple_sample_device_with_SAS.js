@@ -8,20 +8,19 @@ var Protocol = require('azure-iot-device-mqtt').Mqtt;
 // var Protocol = require('azure-iot-device-amqp').AmqpWs;
 // var Protocol = require('azure-iot-device-http').Http;
 // var Protocol = require('azure-iot-device-amqp').Amqp;
-// var Protocol = require('azure-iot-device-mqtt').MqttWs;
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
 
-// String containing Hostname, Device Id & Device Key in the following formats:
-//  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
-var connectionString = require('./config.json').connectionString;
+// String SharedAccessSignature in the following formats:
+//  "SharedAccessSignature sr=<iothub_host_name>/devices/<device_id>&sig=<signature>&se=<expiry>"
+var sas = "[SharedAccessSignature]";
 
-// fromConnectionString must specify a transport constructor, coming from any transport package.
-var client = Client.fromConnectionString(connectionString, Protocol);
+// fromSharedAccessSignature must specify a transport constructor, coming from any transport package.
+var client = Client.fromSharedAccessSignature(sas, Protocol);
 
 var connectCallback = function (err) {
   if (err) {
-    console.error('Could not connect: ' + err.message);
+    console.error('Could not connect: ' + err);
   } else {
     console.log('Client connected');
     client.on('message', function (msg) {
@@ -42,7 +41,7 @@ var connectCallback = function (err) {
       var humidity = 60 + (Math.random() * 20); // range: [60, 80]
       var data = JSON.stringify({ deviceId: 'myFirstDevice', windSpeed: windSpeed, temperature: temperature, humidity: humidity });
       var message = new Message(data);
-      message.properties.add('temperatureAlert', (temperature > 28) ? 'true' : 'false');
+      message.properties.add('temperatureAlert', (temperature > 28) ? 'true' : 'false');      
       console.log('Sending message: ' + message.getData());
       client.sendEvent(message, printResultFor('send'));
     }, 2000);

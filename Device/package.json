@@ -1,7 +1,7 @@
 {
-  "name": "iot-workbench-raspi",
+  "name": "iot-workbench-simulator-simple-sample",
   "version": "0.1.0",
-  "main": "send_telemetry.js",
+  "main": "simple_sample_device.js",
   "dependencies": {
     "azure-iot-device": "1.7.0",
     "azure-iot-device-amqp": "1.7.0",

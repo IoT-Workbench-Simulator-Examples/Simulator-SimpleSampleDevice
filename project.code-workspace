@@ -1,7 +1,11 @@
 {
     "folders": [
+        {
+            "path": "Device"
+        }
     ],
     "settings": {
-        "IoTWorkbench.BoardId": "simulator"
+        "IoTWorkbench.BoardId": "simulator",
+        "IoTWorkbench.DevicePath": "Device"
     }
 }
